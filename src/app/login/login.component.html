@@ -1,0 +1,60 @@
+<div class="login-container" *ngIf="!loggedIn && !showRegistrationForm">
+  <div class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+      <div class="button-container">
+        <button type="submit">Login</button>
+        <button (click)="showRegistration()">Register</button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="!showRegistrationForm && !registrationStatus" class="status"> {{ registerSuccessMessage }}</div>
+</div>
+
+<div *ngIf="showRegistrationForm" class="register-container">
+  <h2>Register</h2>
+  <div>
+    <label class="form-group">Username: <input type="text" [(ngModel)]="registerUserData.userName"></label>
+  </div>
+  <div>
+    <label class="form-group">Password: <input type="password" [(ngModel)]="registerUserData.password"></label>
+  </div>
+  <div>
+    <label class="form-group">Birthday: <input type="date" [(ngModel)]="registerUserData.birthday"></label>
+  </div>
+  <div class="button-container">
+    <button (click)="registerUser()">Register</button>
+    <button (click)="back()">Back</button>
+  </div>
+</div>
+
+<div *ngIf="loggedIn" class="loggedIn">
+  <h2>Update Your User Data</h2>
+  <div *ngFor="let user of userData.users">
+    <ng-container *ngIf="user.userName === loginUsername">
+      <div class="form-group">User Name:</div>
+      <div> {{ user.userName }}</div>
+      <div>
+        <label class="form-group">NewPassword: <input type="password" [(ngModel)]="user.password"></label>
+      </div>
+      <div>
+        <label class="form-group">NewBirthday: <input type="date" [(ngModel)]="user.birthday" value=""></label>
+      </div>
+      <button (click)="updateUser(user)">Update</button>
+      <div *ngIf="updateStatus">
+        <p class="status">{{ updateSuccessMessage }}</p>
+      </div>
+    </ng-container>
+  </div>  
+  <button (click)="logout()" class="logout">Logout</button>
+</div>
+
+
